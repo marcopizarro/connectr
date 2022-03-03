@@ -1,8 +1,8 @@
 import { initializeApp } from 'firebase/app';
 import '@firebase/auth';
 import '@firebase/firestore';
-import { getFirestore, setDoc, doc, getDoc, getDocs, collection } from 'firebase/firestore';
-import {getAuth, signInWithPopup, GoogleAuthProvider} from 'firebase/auth';
+import { getFirestore, setDoc, doc, getDoc, getDocs, collection} from 'firebase/firestore';
+import {getAuth, signInWithPopup, GoogleAuthProvider, createUserWithEmailAndPassword} from 'firebase/auth';
 
 
 const firebaseConfig = {
@@ -18,6 +18,7 @@ let app = initializeApp(firebaseConfig);
 
 const db = getFirestore(app);
 const auth = getAuth(app);
+
 
 const googleProvider = new GoogleAuthProvider();
 const signInWithGoogle = async () => {
