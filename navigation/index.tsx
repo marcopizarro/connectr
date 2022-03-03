@@ -16,8 +16,10 @@ import ModalScreen from '../screens/ModalScreen';
 import NotFoundScreen from '../screens/NotFoundScreen';
 import TabOneScreen from '../screens/TabOneScreen';
 import TabTwoScreen from '../screens/TabTwoScreen';
+import Groupchat from '../screens/Groupchat';
 import { RootStackParamList, RootTabParamList, RootTabScreenProps } from '../types';
 import LinkingConfiguration from './LinkingConfiguration';
+import { Image } from 'react-native';
 
 export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeName }) {
   return (
@@ -40,6 +42,7 @@ function RootNavigator() {
     <Stack.Navigator>
       <Stack.Screen name="Root" component={BottomTabNavigator} options={{ headerShown: false }} />
       <Stack.Screen name="NotFound" component={NotFoundScreen} options={{ title: 'Oops!' }} />
+      <Stack.Screen name="Groupchat" component={Groupchat} options={{ headerShown: false }} />
       <Stack.Group screenOptions={{ presentation: 'modal' }}>
         <Stack.Screen name="Modal" component={ModalScreen} />
       </Stack.Group>
@@ -60,14 +63,41 @@ function BottomTabNavigator() {
     <BottomTab.Navigator
       initialRouteName="TabOne"
       screenOptions={{
-        tabBarActiveTintColor: Colors[colorScheme].tint,
+        tabBarActiveTintColor: Colors["light"].tint,
+        tabBarIconStyle: { display: "none" },
+        tabBarLabelStyle: {
+          fontWeight: "700",
+          fontSize: 20
+        },
       }}>
       <BottomTab.Screen
         name="TabOne"
         component={TabOneScreen}
-        options={({ navigation }: RootTabScreenProps<'TabOne'>) => ({
-          title: 'Tab One',
-          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
+        options={{
+          title: 'Group',
+          headerTitleAlign: 'center',
+          headerTitle: (props) => ( 
+            <Image
+              style={{ width: 200, height: 50 }}
+              source={require('../assets/images/connectr.png')}
+              resizeMode='contain'
+            />
+          ),
+        }}
+      />
+      <BottomTab.Screen
+        name="TabTwo"
+        component={TabTwoScreen}
+        options={({ navigation }: RootTabScreenProps<'TabTwo'>) => ({
+          title: 'Direct Message',
+          headerTitleAlign: 'center',
+          headerTitle: (props) => ( 
+            <Image
+              style={{ width: 200, height: 50 }}
+              source={require('../assets/images/connectr.png')}
+              resizeMode='contain'
+            />
+          ),
           headerRight: () => (
             <Pressable
               onPress={() => navigation.navigate('Modal')}
@@ -75,22 +105,14 @@ function BottomTabNavigator() {
                 opacity: pressed ? 0.5 : 1,
               })}>
               <FontAwesome
-                name="info-circle"
-                size={25}
-                color={Colors[colorScheme].text}
+                name="pencil-square-o"
+                size={35}
+                color="black"
                 style={{ marginRight: 15 }}
               />
             </Pressable>
           ),
         })}
-      />
-      <BottomTab.Screen
-        name="TabTwo"
-        component={TabTwoScreen}
-        options={{
-          title: 'Tab Two',
-          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
-        }}
       />
     </BottomTab.Navigator>
   );
