@@ -9,7 +9,7 @@ import { GoogleAuthProvider, signInWithPopup, getRedirectResult, createUserWithE
 import { FirebaseError, initializeApp } from 'firebase/app';
 import { getFirestore, setDoc, doc, getDoc, getDocs, collection, query, where, addDoc} from 'firebase/firestore';
 import React, { Key, ReactChild, ReactFragment, ReactPortal, useEffect, useState } from 'react';
-import { db, auth, signInWithGoogle } from '../src/firebase/config.js';
+import { db, auth } from '../src/firebase/config.js';
 
 export default function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'>) {
   const [lines, setLines] = useState([] as any);
