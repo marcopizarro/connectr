@@ -28,6 +28,7 @@ const linking: LinkingOptions<RootStackParamList> = {
         },
       },
       Groupchat: 'groupchat',
+      DM: 'DM',
       Modal: 'modal',
       NotFound: '*',
     },

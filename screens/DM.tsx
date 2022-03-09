@@ -9,14 +9,14 @@ import React, { Key, ReactChild, ReactFragment, ReactPortal, useEffect, useState
 import { db, auth } from '../src/firebase/config.js';
 import { FontAwesome } from '@expo/vector-icons';
 
-export default function Groupchat({ route, navigation }: RootStackScreenProps<'Groupchat'>) {
+export default function DM({ route, navigation }: RootStackScreenProps<'DM'>) {
   const [messages, setMessages] = useState([] as any);
   const [text, onChangeText] = React.useState("");
+  const [chatobj, changeChatObj] = React.useState(Object);
   const [name, changeName] = React.useState("");
 
 
   useEffect(() => {
-
       const a = query(collection(db, "users"), where("uid", "==", auth.currentUser?.uid));
       getDocs(a)
         .then((snapshot) => {
@@ -25,8 +25,13 @@ export default function Groupchat({ route, navigation }: RootStackScreenProps<'G
           })
         });
 
-    console.log(auth.currentUser?.email)
-    const q = query(collection(db, "lines", route.params?.obj.id, "messages"), orderBy("sent"));
+      getDoc(doc(db, "dms", route.params?.chatId))
+      .then((snapshot) => {
+        changeChatObj(snapshot.data());
+        console.log(snapshot.data())
+      });
+
+    const q = query(collection(db, "dms", route.params?.chatId, "messages"), orderBy("sent"));
     getDocs(q)
       .then((snapshot) => {
         const data = snapshot.docs.map((doc) => ({
@@ -39,7 +44,7 @@ export default function Groupchat({ route, navigation }: RootStackScreenProps<'G
   }, []);
 
   const update = () =>{
-    const q = query(collection(db, "lines", route.params?.obj.id, "messages"), orderBy("sent"));
+    const q = query(collection(db, "dms", route.params?.chatId, "messages"), orderBy("sent"));
     getDocs(q)
       .then((snapshot) => {
         const data = snapshot.docs.map((doc) => ({
@@ -51,33 +56,12 @@ export default function Groupchat({ route, navigation }: RootStackScreenProps<'G
   };
 
   const back = () => {
-    navigation.goBack();
+    navigation.navigate("Root", { screen: 'TabTwo' });
   };
 
-  const makeDM = (otherID:string, othername:string) =>{
-    addDoc(collection(db, "dms"), {
-      users: [auth.currentUser?.uid, otherID],
-      title:  othername + " & " + name,
-    }).then((res) => {
-
-      console.log("Document written with ID: ", res.id);
-
-      const ref1 = doc(db, "users", auth.currentUser?.uid);
-      updateDoc(ref1, {
-        dms: arrayUnion(res.id)
-      });
-
-      const ref2 = doc(db, "users", otherID);
-      updateDoc(ref2, {
-        dms: arrayUnion(res.id)
-      });
-
-      navigation.navigate('DM', {chatId: res.id});
-    });
-  };
 
   const sendMessage = () =>{
-    addDoc(collection(db, "lines", route.params?.obj.id, "messages"), {
+    addDoc(collection(db, "dms", route.params?.chatId, "messages"), {
       content: text,
       user: auth.currentUser?.uid,
       sent: Timestamp.now(),
@@ -89,7 +73,6 @@ export default function Groupchat({ route, navigation }: RootStackScreenProps<'G
       Keyboard.dismiss()
     });
   };
-
   return (
     <KeyboardAvoidingView behavior="height" style={styles.container}>
       <View style = {{display:"flex", flexDirection:"row", alignItems: "center", justifyContent: "space-between", width:"100%"}}>
@@ -102,11 +85,11 @@ export default function Groupchat({ route, navigation }: RootStackScreenProps<'G
       />
       </Pressable>
         <View>
-          <View style = {{borderRadius:50, backgroundColor:`${route.params?.obj.color}`,display:"flex", width:70, height:70, margin:5, justifyContent:"center", alignSelf:"center"}}>
-            <Text style ={{margin: "auto", fontFamily:"Helvetica", fontWeight:"700", fontSize:28, alignSelf:"center", color:"white"}}>{route.params?.obj.short}</Text>
+          <View style = {{borderRadius:50, backgroundColor:"orange",display:"flex", width:70, height:70, margin:5, justifyContent:"center", alignSelf:"center"}}>
+            <Text style ={{margin: "auto", fontFamily:"Helvetica", fontWeight:"700", fontSize:28, alignSelf:"center", color:"white"}}></Text>
           </View>
           <Text>
-          {route.params?.obj.name} ({route.params?.obj.agency})
+          {chatobj.title}
           </Text>
         </View>
         <FontAwesome
@@ -124,14 +107,7 @@ export default function Groupchat({ route, navigation }: RootStackScreenProps<'G
          <View key={message.id} style={{width:"100%"}}>
               <View style = {{  width:"60%",paddingLeft:12, margin:2, flexDirection:"row", alignItems:"center"}}>
                 <Text style={{color:"black"}}>{message.name ? message.name : "anon"}</Text>
-                <Pressable onPress ={ () => {makeDM(message.user, message.name)}} >
-      <FontAwesome
-                name="envelope"
-                size={15}
-                color="black"
-                style={{ padding:2, paddingLeft:8}}
-      />
-      </Pressable>
+
             </View>
               <View style = {{backgroundColor:"#0F75B3", padding:10, width:"60%", borderRadius:20,margin:2}}>
                 <Text style={{color:"white"}}>{message.content}</Text>

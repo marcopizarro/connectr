@@ -10,13 +10,39 @@ import { FirebaseError, initializeApp } from 'firebase/app';
 import { getFirestore, setDoc, doc, getDoc, getDocs, collection, query, where, addDoc} from 'firebase/firestore';
 import React, { Key, ReactChild, ReactFragment, ReactPortal, useEffect, useState } from 'react';
 import { db, auth } from '../src/firebase/config.js';
+import Modal from "react-native-modal";
+import DropDownPicker from 'react-native-dropdown-picker';
 
 export default function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'>) {
+  const [isModalVisible, setModalVisible] = useState(true);
+
+  const [open, setOpen] = useState(false);
+  const [value, setValue] = useState(null);
+  const [corIdex, setcorIdex] = useState(0);
+
+  const [items, setItems] = useState([
+    {label: 'Apple', value: 'apple'},
+    {label: 'Banana', value: 'banana'}
+  ]);
+
+  const toggleModal = () => {
+    setModalVisible(!isModalVisible);
+    // for(const line in lines){
+      for(var i = 0; i < lines.length; i++) {
+        if (lines[i].id == value) {
+          setcorIdex(i);
+            break;
+        }
+    }
+    // }
+  };
+
   const [lines, setLines] = useState([] as any);
   const [user, setUser] = useState(() => auth.currentUser);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
+  const [text, onChangeText] = React.useState("");
 
   
   onAuthStateChanged(auth, user => {
@@ -29,10 +55,11 @@ export default function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'
   const signUp = () => {
       createUserWithEmailAndPassword(auth, email, password)
         .then((userCredential) => {
-          addDoc(collection(db, "users"), {
+          setDoc(doc(db, "users", userCredential.user.uid), {
             email: userCredential.user.email,
             firstName: name,
             uid: userCredential.user.uid,
+            dms: [],
           });
         })
         .catch((error) => {
@@ -43,7 +70,6 @@ export default function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'
   const signIn = () => {
     signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
-
       })
       .catch((error) => {
           console.log(error);
@@ -51,13 +77,21 @@ export default function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'
 };
 
   useEffect(() => {
+    // auth.signOut();
     getDocs(collection(db, "lines"))
       .then((snapshot) => {
         const data = snapshot.docs.map((doc) => ({
           ...doc.data(),
           id: doc.id,
-          
         }));
+
+        const da2 = snapshot.docs.map((doc) => ({
+          label: doc.data().name + " (" +  doc.data().agency + ")",
+          value: doc.id,
+        }));
+        console.log(da2)
+        console.log(items)
+        setItems(da2)
         setLines(data);
       });
   }, []);
@@ -67,19 +101,41 @@ export default function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'
     style={{
       flexDirection: "column",
     }}>
+            <Modal backdropColor='white'  backdropOpacity={.95} isVisible={isModalVisible}>
+        <View style={{position:"absolute", alignSelf:"center", width:"100%", alignItems:"center"}}>
+          {/* <Text>fsdf</Text> */}
+          {/* <TextInput
+          style={styles.input}
+          onChangeText={onChangeText}
+          value={text}
+          placeholder="you go here"
+          placeholderTextColor="gray"/> */}
+
+        <DropDownPicker
+          open={open}
+          value={value}
+          items={items}
+          setOpen={setOpen}
+          setValue={setValue}
+          setItems={setItems}
+        />
+
+          <Button title="Enter!" onPress={toggleModal} />
+        </View>
+      </Modal>
     <View style={{ backgroundColor: "#0F75B3", width: "100%", height: 50, justifyContent: 'center',}}>
-      <Text style={{paddingLeft:20, fontSize:25, color:"white", fontWeight:"600", fontFamily:"Helvetica",}}>Your Ride</Text>
+      <Text style={{paddingLeft:20, fontSize:25, color:"white", fontWeight:"600", fontFamily:"Helvetica",}}>Current Ride</Text>
     </View>
-    {lines[0]?
-    <Pressable key={lines[0].id} onPress={() => navigation.navigate('Groupchat', {obj: lines[0]})}>
-        <View key={lines[0].id} style={{ margin:10, flexDirection:"row", justifyContent:"space-between"}}>
-            <View style = {{borderRadius:50, backgroundColor:`${lines[0].color}`,display:"flex", width:60, height:60, margin:5, alignSelf:"center", alignItems:"stretch", justifyContent:"center", flex:0}}>
-              <Text style ={{margin: "auto", fontFamily:"Helvetica", fontWeight:"700", fontSize:22, alignSelf:"center", color:"white"}}>{lines[0].short}</Text>
+    {lines[corIdex]?
+    <Pressable key={lines[corIdex].id} onPress={() => navigation.navigate('Groupchat', {obj: lines[corIdex]})}>
+        <View key={lines[corIdex].id} style={{ margin:10, flexDirection:"row", justifyContent:"space-between"}}>
+            <View style = {{borderRadius:50, backgroundColor:`${lines[corIdex].color}`,display:"flex", width:60, height:60, margin:5, alignSelf:"center", alignItems:"stretch", justifyContent:"center", flex:0}}>
+              <Text style ={{margin: "auto", fontFamily:"Helvetica", fontWeight:"700", fontSize:22, alignSelf:"center", color:"white"}}>{lines[corIdex].short}</Text>
           </View>
 
             <View style={{margin:10, flexDirection:"column", alignItems:"flex-start", flex:1}}>
-              <Text style ={{margin: "auto", fontFamily:"Helvetica", fontWeight:"500", fontSize:14}}>{lines[0].name} ({lines[0].agency})</Text>
-              <Text style ={{margin: "auto", fontFamily:"Helvetica", fontWeight:"100", fontSize:14}}>"Marco: sample text heres"</Text>
+              <Text style ={{margin: "auto", fontFamily:"Helvetica", fontWeight:"500", fontSize:14}}>{lines[corIdex].name} ({lines[corIdex].agency})</Text>
+              <Text style ={{margin: "auto", fontFamily:"Helvetica", fontWeight:"100", fontSize:14}}>Last active: Now</Text>
             </View>
 
           <Pressable style={{borderRadius:10, backgroundColor:"#0F75B3", height:35, alignSelf:"center", marginEnd:10, flex:0, flexDirection:"column", alignItems:"center"}} onPress={() => navigation.navigate('Modal')}>
@@ -102,7 +158,7 @@ export default function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'
 
             <View style={{margin:10, flexDirection:"column", alignItems:"flex-start", flex:1}}>
               <Text style ={{margin: "auto", fontFamily:"Helvetica", fontWeight:"500", fontSize:14}}>{message.name} ({message.agency})</Text>
-              <Text style ={{margin: "auto", fontFamily:"Helvetica", fontWeight:"100", fontSize:14}}>"Marco: sample text heres"</Text>
+              <Text style ={{margin: "auto", fontFamily:"Helvetica", fontWeight:"100", fontSize:14}}>Last active: Now</Text>
             </View>
 
           <Pressable style={{borderRadius:10, backgroundColor:"#0F75B3", height:35, alignSelf:"center", marginEnd:10, flex:0, flexDirection:"column", alignItems:"center"}} onPress={() => navigation.navigate('Modal')}>
@@ -113,7 +169,8 @@ export default function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'
         </Pressable>
       ))}
     </View>
-  </View>
+    </View>
+
   );}
   else{
     return(
