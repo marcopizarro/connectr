@@ -15,7 +15,7 @@ declare global {
 
 export type RootStackParamList = {
   Root: NavigatorScreenParams<RootTabParamList> | undefined;
-  Modal: undefined;
+  Modal: {obj: Object} | undefined;
   NotFound: undefined;
   Groupchat: {obj: Object} | undefined;
   DM: {chatId: String} | any;

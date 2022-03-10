@@ -27,14 +27,12 @@ export default function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'
 
   const toggleModal = () => {
     setModalVisible(!isModalVisible);
-    // for(const line in lines){
       for(var i = 0; i < lines.length; i++) {
         if (lines[i].id == value) {
           setcorIdex(i);
             break;
         }
     }
-    // }
   };
 
   const [lines, setLines] = useState([] as any);
@@ -138,7 +136,7 @@ export default function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'
               <Text style ={{margin: "auto", fontFamily:"Helvetica", fontWeight:"100", fontSize:14}}>Last active: Now</Text>
             </View>
 
-          <Pressable style={{borderRadius:10, backgroundColor:"#0F75B3", height:35, alignSelf:"center", marginEnd:10, flex:0, flexDirection:"column", alignItems:"center"}} onPress={() => navigation.navigate('Modal')}>
+          <Pressable style={{borderRadius:10, backgroundColor:"#0F75B3", height:35, alignSelf:"center", marginEnd:10, flex:0, flexDirection:"column", alignItems:"center"}} onPress={() => navigation.navigate('Modal', {obj: lines[corIdex]})}>
             <Text style={{ margin: "auto", padding:10, alignSelf:"center", color:"white"}}>Transit Info</Text>
           </Pressable>
         </View>
@@ -161,7 +159,7 @@ export default function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'
               <Text style ={{margin: "auto", fontFamily:"Helvetica", fontWeight:"100", fontSize:14}}>Last active: Now</Text>
             </View>
 
-          <Pressable style={{borderRadius:10, backgroundColor:"#0F75B3", height:35, alignSelf:"center", marginEnd:10, flex:0, flexDirection:"column", alignItems:"center"}} onPress={() => navigation.navigate('Modal')}>
+          <Pressable style={{borderRadius:10, backgroundColor:"#0F75B3", height:35, alignSelf:"center", marginEnd:10, flex:0, flexDirection:"column", alignItems:"center"}} onPress={() => navigation.navigate('Modal', {obj: message})}>
             <Text style={{ margin: "auto", padding:10, alignSelf:"center", color:"white"}}>Transit Info</Text>
           </Pressable>
           
