@@ -12,12 +12,13 @@ import React, { Key, ReactChild, ReactFragment, ReactPortal, useEffect, useState
 import { db, auth } from '../src/firebase/config.js';
 import Modal from "react-native-modal";
 import DropDownPicker from 'react-native-dropdown-picker';
+import { StatusBar } from 'expo-status-bar';
 
 export default function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'>) {
   const [isModalVisible, setModalVisible] = useState(true);
 
   const [open, setOpen] = useState(false);
-  const [value, setValue] = useState(null);
+  const [value, setValue] = useState('hbZeEDxBFMlp8gD2yYwV');
   const [corIdex, setcorIdex] = useState(0);
 
   const [items, setItems] = useState([
@@ -93,12 +94,14 @@ export default function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'
         setLines(data);
       });
   }, []);
+
   if(user){
   return (
     <View
     style={{
       flexDirection: "column",
     }}>
+      <StatusBar style="dark" />
             <Modal backdropColor='white'  backdropOpacity={.95} isVisible={isModalVisible}>
         <View style={{position:"absolute", alignSelf:"center", width:"100%", alignItems:"center"}}>
           {/* <Text>fsdf</Text> */}
@@ -108,7 +111,7 @@ export default function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'
           value={text}
           placeholder="you go here"
           placeholderTextColor="gray"/> */}
-
+        <Text style ={{margin: 10, fontFamily:"Helvetica", fontWeight:"400", fontSize:14}}>Based on your current location, we have selected your nearest line. (Change if necessary)</Text>
         <DropDownPicker
           open={open}
           value={value}
@@ -118,7 +121,7 @@ export default function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'
           setItems={setItems}
         />
 
-          <Button title="Enter!" onPress={toggleModal} />
+          <Button title="Confirm" onPress={toggleModal} />
         </View>
       </Modal>
     <View style={{ backgroundColor: "#0F75B3", width: "100%", height: 50, justifyContent: 'center',}}>
@@ -136,7 +139,7 @@ export default function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'
               <Text style ={{margin: "auto", fontFamily:"Helvetica", fontWeight:"100", fontSize:14}}>Last active: Now</Text>
             </View>
 
-          <Pressable style={{borderRadius:10, backgroundColor:"#0F75B3", height:35, alignSelf:"center", marginEnd:10, flex:0, flexDirection:"column", alignItems:"center"}} onPress={() => navigation.navigate('Modal', {obj: lines[corIdex]})}>
+          <Pressable style={{borderRadius:10, backgroundColor:"#0F75B3", height:35, alignSelf:"center", marginEnd:10, flex:0, flexDirection:"column", alignItems:"center"}} onPress={() => navigation.navigate('TransitInfo', {obj: lines[corIdex]})}>
             <Text style={{ margin: "auto", padding:10, alignSelf:"center", color:"white"}}>Transit Info</Text>
           </Pressable>
         </View>
@@ -159,7 +162,7 @@ export default function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'
               <Text style ={{margin: "auto", fontFamily:"Helvetica", fontWeight:"100", fontSize:14}}>Last active: Now</Text>
             </View>
 
-          <Pressable style={{borderRadius:10, backgroundColor:"#0F75B3", height:35, alignSelf:"center", marginEnd:10, flex:0, flexDirection:"column", alignItems:"center"}} onPress={() => navigation.navigate('Modal', {obj: message})}>
+          <Pressable style={{borderRadius:10, backgroundColor:"#0F75B3", height:35, alignSelf:"center", marginEnd:10, flex:0, flexDirection:"column", alignItems:"center"}} onPress={() => navigation.navigate('TransitInfo', {obj: message})}>
             <Text style={{ margin: "auto", padding:10, alignSelf:"center", color:"white"}}>Transit Info</Text>
           </Pressable>
           

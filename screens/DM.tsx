@@ -75,8 +75,8 @@ export default function DM({ route, navigation }: RootStackScreenProps<'DM'>) {
   };
   return (
     <KeyboardAvoidingView behavior="height" style={styles.container}>
-      <View style = {{display:"flex", flexDirection:"row", alignItems: "center", justifyContent: "space-between", width:"100%"}}>
-        <Pressable onPress={back}>
+      <View style = {{display:"flex", flexDirection:"row", alignItems: "center", justifyContent: "center", width:"100%"}}>
+        <Pressable onPress={back} style={{position:"absolute", left:0}}>
       <FontAwesome
                 name="caret-left"
                 size={50}
@@ -85,19 +85,22 @@ export default function DM({ route, navigation }: RootStackScreenProps<'DM'>) {
       />
       </Pressable>
         <View>
-          <View style = {{borderRadius:50, backgroundColor:"orange",display:"flex", width:70, height:70, margin:5, justifyContent:"center", alignSelf:"center"}}>
+          <View style = {{borderRadius:50, backgroundColor:"orange",display:"flex", width:70, height:70, margin:5, justifyContent:"center", alignSelf:"center",}}>
             <Text style ={{margin: "auto", fontFamily:"Helvetica", fontWeight:"700", fontSize:28, alignSelf:"center", color:"white"}}></Text>
           </View>
           <Text>
           {chatobj.title}
           </Text>
         </View>
+        {/* <Pressable style={{position:"absolute", right:0}} onPress={() => {navigation.navigate('Music', {obj: route.params?.obj})}}>
+
         <FontAwesome
                 name="headphones"
-                size={50}
+                size={35}
                 color="black"
-                style={{ padding:20}}
+                style={{ paddingRight:20}}
               />
+              </Pressable> */}
       </View>
 <ScrollView style={{width:"100%"}}>
       {messages.map((message: { id: Key; content:string; sent: Timestamp; user:string; name:string}) => (

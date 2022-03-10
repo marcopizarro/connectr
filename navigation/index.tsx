@@ -18,6 +18,9 @@ import TabOneScreen from '../screens/TabOneScreen';
 import TabTwoScreen from '../screens/TabTwoScreen';
 import Groupchat from '../screens/Groupchat';
 import DM from '../screens/DM';
+import FAQ from '../screens/FAQ';
+import Music from '../screens/Music';
+
 
 import { RootStackParamList, RootTabParamList, RootTabScreenProps } from '../types';
 import LinkingConfiguration from './LinkingConfiguration';
@@ -46,8 +49,12 @@ function RootNavigator() {
       <Stack.Screen name="NotFound" component={NotFoundScreen} options={{ title: 'Oops!' }} />
       <Stack.Screen name="Groupchat" component={Groupchat} options={{ headerShown: false }} />
       <Stack.Screen name="DM" component={DM} options={{ headerShown: false }} />
+      <Stack.Screen name="Music" component={Music} options={{ headerShown: false }} />
       <Stack.Group screenOptions={{ presentation: 'modal' }}>
-        <Stack.Screen name="Modal" component={ModalScreen} />
+        <Stack.Screen name="TransitInfo" component={ModalScreen} options={{title:"Transit Information"}}/>
+      </Stack.Group>
+      <Stack.Group screenOptions={{ presentation: 'modal' }}>
+        <Stack.Screen name="FAQ" component={FAQ} options={{title:"FAQ"}}/>
       </Stack.Group>
     </Stack.Navigator>
   );
@@ -76,7 +83,7 @@ function BottomTabNavigator() {
       <BottomTab.Screen
         name="TabOne"
         component={TabOneScreen}
-        options={{
+        options={({ navigation }: RootTabScreenProps<'TabOne'>) => ({
           title: 'Group',
           headerTitleAlign: 'center',
           headerTitle: (props) => ( 
@@ -86,7 +93,21 @@ function BottomTabNavigator() {
               resizeMode='contain'
             />
           ),
-        }}
+          headerRight: () => (
+            <Pressable
+              onPress={() => navigation.navigate('FAQ')}
+              style={({ pressed }) => ({
+                opacity: pressed ? 0.5 : 1,
+              })}>
+              <FontAwesome
+                name="question-circle-o"
+                size={35}
+                color="black"
+                style={{ marginRight: 15 }}
+              />
+            </Pressable>
+          ),
+        })}
       />
       <BottomTab.Screen
         name="TabTwo"
@@ -103,12 +124,12 @@ function BottomTabNavigator() {
           ),
           headerRight: () => (
             <Pressable
-              onPress={() => navigation.navigate('Modal')}
+              onPress={() => navigation.navigate('FAQ')}
               style={({ pressed }) => ({
                 opacity: pressed ? 0.5 : 1,
               })}>
               <FontAwesome
-                name="pencil-square-o"
+                name="question-circle-o"
                 size={35}
                 color="black"
                 style={{ marginRight: 15 }}

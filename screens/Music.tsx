@@ -8,9 +8,8 @@ import { getFirestore, setDoc, doc, getDoc, getDocs, collection, query, where, T
 import React, { Key, ReactChild, ReactFragment, ReactPortal, useEffect, useState } from 'react';
 import { db, auth } from '../src/firebase/config.js';
 import { FontAwesome } from '@expo/vector-icons';
-import { StatusBar } from 'expo-status-bar';
 
-export default function Groupchat({ route, navigation }: RootStackScreenProps<'Groupchat'>) {
+export default function Music({ route, navigation }: RootStackScreenProps<'Music'>) {
   const [messages, setMessages] = useState([] as any);
   const [text, onChangeText] = React.useState("");
   const [name, changeName] = React.useState("");
@@ -93,81 +92,26 @@ export default function Groupchat({ route, navigation }: RootStackScreenProps<'G
 
   return (
     <KeyboardAvoidingView behavior="height" style={styles.container}>
-            <StatusBar style="dark" />
-
-      <View style = {{display:"flex", flexDirection:"row", alignItems: "center", justifyContent: "center", width:"100%"}}>
-        <Pressable onPress={back}  style={{position:"absolute", left:0}}>
-      <FontAwesome
-                name="caret-left"
-                size={50}
-                color="black"
-                style={{ padding:20, left:0}}
-      />
+      <View style = {{display:"flex", flexDirection:"row", alignItems: "center", width:"100%", justifyContent:"center"}}>
+        <Pressable onPress={back}  style={{left:0, position:"absolute"}}>
+            <FontAwesome
+                      name="caret-left"
+                      size={50}
+                      color="black"
+                      style={{ padding:20, left:0}}
+            />
       </Pressable>
-        <View>
-          <View style = {{borderRadius:50, backgroundColor:`${route.params?.obj.color}`, width:70, height:70, margin:5, justifyContent:"center", alignSelf:"center"}}>
+
+        <View style = {{alignSelf:"flex-end", alignItems:"center"}}>
+          <View style = {{borderRadius:50, backgroundColor:`${route.params?.obj.color}`, width:70, height:70, margin:5, justifyContent:"center", }}>
             <Text style ={{margin: "auto", fontFamily:"Helvetica", fontWeight:"700", fontSize:28, alignSelf:"center", color:"white"}}>{route.params?.obj.short}</Text>
           </View>
           <Text>
           {route.params?.obj.name} ({route.params?.obj.agency})
           </Text>
         </View>
-        <Pressable style={{position:"absolute", right:0}} onPress={() => {navigation.navigate('Music', {obj: route.params?.obj})}}>
-        <FontAwesome
-                name="headphones"
-                size={35}
-                color="black"
-                style={{ paddingRight:20}}
-              />
-              </Pressable>
       </View>
-<ScrollView style={{width:"100%"}}>
-      {messages.map((message: { id: Key; content:string; sent: Timestamp; user:string; name:string}) => (
-        
-        message.user != auth.currentUser?.uid 
-        ? 
-         <View key={message.id} style={{width:"100%"}}>
-              <View style = {{  width:"60%",paddingLeft:12, margin:2, flexDirection:"row", alignItems:"center"}}>
-                <Text style={{color:"black"}}>{message.name ? message.name : "anon"}</Text>
-                <Pressable onPress ={ () => {makeDM(message.user, message.name)}} >
-      <FontAwesome
-                name="envelope"
-                size={15}
-                color="black"
-                style={{ padding:2, paddingLeft:8}}
-      />
-      </Pressable>
-            </View>
-              <View style = {{backgroundColor:"#0F75B3", padding:10, width:"60%", borderRadius:20,margin:2}}>
-                <Text style={{color:"white"}}>{message.content}</Text>
-              </View>
-              
 
-        </View>
-        :
-        <View key={message.id} style={{width:"100%"}}>
-              <View style = {{  width:"60%",paddingLeft:12, margin:2,  alignSelf:"flex-end", }}>
-                <Text style={{color:"black"}}>{message.name ? message.name : "anon"}</Text>
-              </View>
-          <View style = {{backgroundColor:"#520EB3", padding:10, width:"60%", borderRadius:20,margin:2, alignSelf:"flex-end",}}>
-            <Text style={{color:"white"}}>{message.content}</Text>
-          </View>
-       </View>
-          
-          ))}
-</ScrollView>
-      <View style = {{width:"100%", flexDirection:"row", alignItems:"center", position:"absolute", bottom:10}}>
-        <TextInput
-          style={styles.input}
-          onChangeText={onChangeText}
-          value={text}
-          placeholder="useless placeholder"/>
-        <Pressable onPress={sendMessage} style={{width:"20%", backgroundColor:"#0F75B3",alignItems:"center", borderRadius:15}}>
-          <Text style={{padding:5, color:"white"}}>
-            Send
-          </Text>
-        </Pressable>
-      </View>
     </KeyboardAvoidingView>
   );
 }

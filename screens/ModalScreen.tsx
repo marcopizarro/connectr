@@ -9,10 +9,13 @@ import { Text, View } from '../components/Themed';
 import { RootStackScreenProps } from '../types';
 
 
-export default function ModalScreen({ route, navigation }: RootStackScreenProps<'Modal'>) {
+export default function ModalScreen({ route, navigation }: RootStackScreenProps<'TransitInfo'>) {
   const line = route.params?.obj;
   return (
+    
     <View style={styles.container}>
+            <StatusBar style="light" />
+
       <View style={{backgroundColor:"#E5E5E5", width: "100%", height: "25%", justifyContent: 'center', flexDirection:"row"}}>
         <View style={{backgroundColor:"white", width:"50%", margin:10, alignItems: 'center',justifyContent: "center", flexDirection:"row", borderRadius:22}}>
           <Text style ={{width:"20%", fontSize:60, color:"#0EB349", fontFamily:"Helvetica"}}>{line.minaway}</Text>
@@ -27,7 +30,7 @@ export default function ModalScreen({ route, navigation }: RootStackScreenProps<
       <View style={{backgroundColor:"#E5E5E5", width: "100%", height: "25%", justifyContent: 'center', flexDirection:"row"}}>
         <View style={{backgroundColor:"white", width:"50%", margin:10, alignItems: 'center',justifyContent: "center", flexDirection:"row", borderRadius:22}}>
           <Text style ={{width:"20%", fontSize:60, color:"#0EB349", fontFamily:"Helvetica"}}>{line.activeusers}</Text>
-          <Text style ={{width:"42%", fontSize:28, margin:5, fontFamily:"Helvetica", fontWeight:"200"}}>active users</Text>
+          <Text style ={{width:"42%", fontSize:26, margin:5, fontFamily:"Helvetica", fontWeight:"200"}}>active users</Text>
         </View>
         <View style={{backgroundColor:"white", width:"50%", margin:10, alignItems: 'center',justifyContent: "center", flexDirection:"row", borderRadius:22}}>
         <Text style ={{width:"20%", fontSize:60, color:"#0EB349", fontFamily:"Helvetica"}}>0</Text>
@@ -49,9 +52,9 @@ const styles = StyleSheet.create({
     width:"100%",
     flex: 1,
     alignItems: 'flex-start',
-    justifyContent: "center",
+    justifyContent: "flex-start",
     backgroundColor:"#E5E5E5",
-
+    padding:20
   },
   title: {
     fontSize: 20,
