@@ -121,24 +121,32 @@ export default function Groupchat({ route, navigation }: RootStackScreenProps<'G
               />
               </Pressable>
       </View>
-<ScrollView style={{width:"100%"}}>
+<ScrollView style={{width:"100%", paddingHorizontal:15}}>
       {messages.map((message: { id: Key; content:string; sent: Timestamp; user:string; name:string}) => (
         
         message.user != auth.currentUser?.uid 
         ? 
          <View key={message.id} style={{width:"100%"}}>
-              <View style = {{  width:"60%",paddingLeft:12, margin:2, flexDirection:"row", alignItems:"center"}}>
+              <View style = {{  maxWidth:"60%",paddingLeft:12, margin:2, flexDirection:"row", alignItems:"center"}}>
                 <Text style={{color:"black"}}>{message.name ? message.name : "anon"}</Text>
                 <Pressable onPress ={ () => {makeDM(message.user, message.name)}} >
       <FontAwesome
                 name="envelope"
                 size={15}
                 color="black"
-                style={{ padding:2, paddingLeft:8}}
+                style={{ padding:2, paddingLeft:15}}
+      />
+      </Pressable>
+      <Pressable onPress ={ () => {auth.signOut()}} >
+      <FontAwesome
+                name="flag"
+                size={15}
+                color="black"
+                style={{ padding:2, paddingLeft:15}}
       />
       </Pressable>
             </View>
-              <View style = {{backgroundColor:"#0F75B3", padding:10, width:"60%", borderRadius:20,margin:2}}>
+              <View style = {{backgroundColor:"#0F75B3", padding:10, maxWidth:"60%", borderRadius:20,margin:2}}>
                 <Text style={{color:"white"}}>{message.content}</Text>
               </View>
               
@@ -146,10 +154,10 @@ export default function Groupchat({ route, navigation }: RootStackScreenProps<'G
         </View>
         :
         <View key={message.id} style={{width:"100%"}}>
-              <View style = {{  width:"60%",paddingLeft:12, margin:2,  alignSelf:"flex-end", }}>
+              <View style = {{  maxWidth:"60%",paddingLeft:12, margin:2,  alignSelf:"flex-end", }}>
                 <Text style={{color:"black"}}>{message.name ? message.name : "anon"}</Text>
               </View>
-          <View style = {{backgroundColor:"#520EB3", padding:10, width:"60%", borderRadius:20,margin:2, alignSelf:"flex-end",}}>
+          <View style = {{backgroundColor:"#520EB3", padding:10, maxWidth:"60%", borderRadius:20,margin:2, alignSelf:"flex-end",}}>
             <Text style={{color:"white"}}>{message.content}</Text>
           </View>
        </View>
@@ -161,7 +169,7 @@ export default function Groupchat({ route, navigation }: RootStackScreenProps<'G
           style={styles.input}
           onChangeText={onChangeText}
           value={text}
-          placeholder="useless placeholder"/>
+          placeholder="send a message!"/>
         <Pressable onPress={sendMessage} style={{width:"20%", backgroundColor:"#0F75B3",alignItems:"center", borderRadius:15}}>
           <Text style={{padding:5, color:"white"}}>
             Send

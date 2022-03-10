@@ -91,7 +91,8 @@ export default function Music({ route, navigation }: RootStackScreenProps<'Music
   };
 
   return (
-    <KeyboardAvoidingView behavior="height" style={styles.container}>
+    <View behavior="height" style={styles.container}>
+
       <View style = {{display:"flex", flexDirection:"row", alignItems: "center", width:"100%", justifyContent:"center"}}>
         <Pressable onPress={back}  style={{left:0, position:"absolute"}}>
             <FontAwesome
@@ -110,9 +111,43 @@ export default function Music({ route, navigation }: RootStackScreenProps<'Music
           {route.params?.obj.name} ({route.params?.obj.agency})
           </Text>
         </View>
+        <Pressable  style={{right:0, position:"absolute"}}>
+            <FontAwesome
+                      name="plus"
+                      size={35}
+                      color="black"
+                      style={{ padding:20, left:0}}
+            />
+      </Pressable>
+      </View>
+      <View style={{position:"absolute", bottom:40, height:100, width:"100%", flexDirection:"row", justifyContent:"space-between"}}>
+      <Pressable  style={{}}>
+            <FontAwesome
+                      name="backward"
+                      size={45}
+                      color="black"
+                      style={{ padding:40}}
+            />
+      </Pressable>
+      <Pressable  style={{}}>
+            <FontAwesome
+                      name="play"
+                      size={45}
+                      color="black"
+                      style={{ padding:40}}
+            />
+      </Pressable>
+      <Pressable  style={{}}>
+            <FontAwesome
+                      name="forward"
+                      size={45}
+                      color="black"
+                      style={{ padding:40}}
+            />
+      </Pressable>
       </View>
 
-    </KeyboardAvoidingView>
+    </View>
   );
 }
 

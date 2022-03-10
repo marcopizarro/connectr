@@ -92,15 +92,14 @@ export default function DM({ route, navigation }: RootStackScreenProps<'DM'>) {
           {chatobj.title}
           </Text>
         </View>
-        {/* <Pressable style={{position:"absolute", right:0}} onPress={() => {navigation.navigate('Music', {obj: route.params?.obj})}}>
-
+        <Pressable style={{position:"absolute", right:0}} onPress={() => {}}>
         <FontAwesome
-                name="headphones"
+                name="flag"
                 size={35}
                 color="black"
                 style={{ paddingRight:20}}
               />
-              </Pressable> */}
+              </Pressable>
       </View>
 <ScrollView style={{width:"100%"}}>
       {messages.map((message: { id: Key; content:string; sent: Timestamp; user:string; name:string}) => (
