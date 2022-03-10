@@ -93,16 +93,16 @@ export default function Groupchat({ route, navigation }: RootStackScreenProps<'G
   return (
     <KeyboardAvoidingView behavior="height" style={styles.container}>
       <View style = {{display:"flex", flexDirection:"row", alignItems: "center", justifyContent: "space-between", width:"100%"}}>
-        <Pressable onPress={back}>
+        <Pressable onPress={back}  >
       <FontAwesome
                 name="caret-left"
                 size={50}
                 color="black"
-                style={{ padding:20}}
+                style={{ padding:20, left:0}}
       />
       </Pressable>
         <View>
-          <View style = {{borderRadius:50, backgroundColor:`${route.params?.obj.color}`,display:"flex", width:70, height:70, margin:5, justifyContent:"center", alignSelf:"center"}}>
+          <View style = {{borderRadius:50, backgroundColor:`${route.params?.obj.color}`, width:70, height:70, margin:5, justifyContent:"center", alignSelf:"center"}}>
             <Text style ={{margin: "auto", fontFamily:"Helvetica", fontWeight:"700", fontSize:28, alignSelf:"center", color:"white"}}>{route.params?.obj.short}</Text>
           </View>
           <Text>
@@ -111,9 +111,9 @@ export default function Groupchat({ route, navigation }: RootStackScreenProps<'G
         </View>
         <FontAwesome
                 name="headphones"
-                size={50}
+                size={35}
                 color="black"
-                style={{ padding:20}}
+                style={{ paddingRight:20}}
               />
       </View>
 <ScrollView style={{width:"100%"}}>
