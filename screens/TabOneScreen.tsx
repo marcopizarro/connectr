@@ -121,7 +121,9 @@ export default function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'
           setItems={setItems}
         />
 
-          <Button title="Confirm" onPress={toggleModal} />
+<Pressable style={{borderRadius:10, backgroundColor:"#0F75B3", height:35, alignSelf:"center", marginEnd:10, flex:0, flexDirection:"column", alignItems:"center", margin:10}} onPress={toggleModal}>
+            <Text style={{ margin: "auto", padding:10, alignSelf:"center", color:"white"}}>Confirm</Text>
+          </Pressable>
         </View>
       </Modal>
     <View style={{ backgroundColor: "#0F75B3", width: "100%", height: 50, justifyContent: 'center',}}>
@@ -176,7 +178,11 @@ export default function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'
   else{
     return(
       <View style = {{flexDirection:"column", alignItems:"center", padding:20}}>
+              <StatusBar style="dark" />
+
         <Text style={{fontSize:25, fontWeight:"600", fontFamily:"Helvetica",}}>Welcome to Connectr!</Text>
+        <Text style={{fontSize:16, fontWeight:"300", fontFamily:"Helvetica",}}>simplifying public transit through connection</Text>
+
         <TextInput
         style={styles.input}
         onChangeText={setName}

@@ -12,6 +12,8 @@ import { RootStackScreenProps } from '../types';
 export default function FAQ() {
   return (
     <View style ={styles.container}>
+            <StatusBar style="light" />
+
       <Text style = {{fontFamily:"Helvetica", fontSize:15, fontWeight:"bold"}}>What can I use this app for?</Text>
       <Text style = {{fontFamily:"Helvetica", fontSize:15, padding:10}}>Connectr aims to make public transit more usable and accessible. We want to reduce the stress of interacting with a transit system by providing visual aids, user-friendly information services, and community-based support. We also hope to help people find the joy in public transit by introducing features that increase social interaction and spontaneity. Our product unites other public transit information services to create a singular platform for all transit needs.</Text>
 
